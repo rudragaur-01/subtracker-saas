@@ -1,0 +1,85 @@
+# =========================
+# Node.js dependencies
+# =========================
+**/node_modules/
+
+# Optional npm cache directories
+.npm
+.pnpm-debug.log
+.yarn/*
+.pnp.*
+
+# Lock files (optional, track only one if needed)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Logs & runtime data
+# =========================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# =========================
+# Environment variables
+# =========================
+**/.env
+**/.env.*
+!.env.example
+
+# =========================
+# Build outputs
+api/dist/
+api/build/
+web/.next/
+web/out/
+web/.vercel/
+**/.cache/
+**/.parcel-cache/
+**/.vite/
+**/.vitepress/dist/
+**/.vitepress/cache/
+web/.docusaurus/
+web/.svelte-kit/
+web/.nuxt/
+web/dist/
+web/.output/
+web/public/
+
+# =========================
+# Test coverage & reports
+# =========================
+coverage/
+.nyc_output/
+*.lcov
+
+# =========================
+# TypeScript
+*.tsbuildinfo
+
+# =========================
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# =========================
+# Misc caches
+.yarn-integrity
+.fusebox/
+firebase-debug.log
+.tern-port
+
+# =========================
+# Optional tool-specific
+.eslintcache
+.stylelintcache
