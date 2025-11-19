@@ -3,6 +3,7 @@ import pool from "./config/database.js";
 import authRoutes from "./routes/auth.routes.js";
 import dotenv from "dotenv";
 import cors from "cors";
+
 dotenv.config();
 
 const app = express();

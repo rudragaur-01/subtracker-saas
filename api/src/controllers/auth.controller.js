@@ -40,7 +40,6 @@ export const signup = async (req, res) => {
     const user = newUser.rows[0];
 
     const token = GenerateToken(user.id, user.email);
-    console.log(token);
 
     res.status(201).json({
       message: "Signup successful",
@@ -120,8 +119,7 @@ export const googleCallback = async (req, res) => {
       user = userCheck.rows[0];
     }
     const token = GenerateToken(user.id, user.email);
-   res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
-
+    res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
   } catch (error) {
     console.error(error);
     res.status(500).send("Google login failed");
@@ -134,4 +132,37 @@ export const googleLogin = async (req, res) => {
   const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.GOOGLE_CLIENT_ID}&scope=openid%20email%20profile&redirect_uri=${redirectUri}`;
 
   res.redirect(oauthUrl);
+};
+
+export const createPassword = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { password } = req.body;
+
+    if (!password || password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await pool.query(
+      `UPDATE users
+       SET password = $1
+       WHERE id = $2
+       RETURNING id, username, email, business_name, contact_number`,
+      [hashedPassword, userId]
+    );
+
+    const updatedUser = result.rows[0];
+
+    res.status(200).json({
+      message: "Password created successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Create Password error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
