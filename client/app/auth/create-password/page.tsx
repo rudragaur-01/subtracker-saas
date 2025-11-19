@@ -22,10 +22,10 @@ const CreatePasswordPage = () => {
     }
 
     try {
-      const res = await api.patch("/auth/create-password", {password});
+      const res = await api.patch("/auth/create-password", { password });
       console.log(res);
       if (res.data) {
-        router.push("/");
+        router.push("/business-details");
       }
     } catch (err) {
       console.error(err);
@@ -34,7 +34,9 @@ const CreatePasswordPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+    <div className="bg-muted flex min-h-[calc(100vh-64px)] flex-col items-center justify-center gap-6 p-6 md:p-10">
+     <div className="flex w-full max-w-sm flex-col gap-6">
+
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Create your Password
       </h2>
@@ -65,6 +67,7 @@ const CreatePasswordPage = () => {
           Save & Continue
         </Button>
       </form>
+      </div>
     </div>
   );
 };

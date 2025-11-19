@@ -3,6 +3,7 @@ import pool from "./config/database.js";
 import authRoutes from "./routes/auth.routes.js";
 import dotenv from "dotenv";
 import cors from "cors";
+import adminRoutes from "./routes/admin.routes.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

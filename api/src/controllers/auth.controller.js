@@ -11,8 +11,7 @@ const client = new OAuth2Client(
 
 export const signup = async (req, res) => {
   try {
-    const { username, email, password, business_name, contact_number } =
-      req.body;
+    const { username, email, password } = req.body;
 
     if (!password || password.length < 6) {
       return res.status(400).json({
@@ -31,10 +30,10 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await pool.query(
-      `INSERT INTO users (username, email, password, business_name, contact_number)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO users (username, email, password)
+       VALUES ($1, $2, $3)
        RETURNING id, username, email`,
-      [username, email, hashedPassword, business_name, contact_number]
+      [username, email, hashedPassword]
     );
 
     const user = newUser.rows[0];
