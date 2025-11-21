@@ -150,7 +150,7 @@ export const createPassword = async (req, res) => {
       `UPDATE users
        SET password = $1
        WHERE id = $2
-       RETURNING id, username, email, business_name, contact_number`,
+       RETURNING id, username, email`,
       [hashedPassword, userId]
     );
 

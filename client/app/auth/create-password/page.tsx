@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import api from "@/api/api";
+import { createPassword } from "@/api/auth";
 
 const CreatePasswordPage = () => {
   const router = useRouter();
@@ -22,10 +22,11 @@ const CreatePasswordPage = () => {
     }
 
     try {
-      const res = await api.patch("/auth/create-password", { password });
+      const res = await createPassword({ password });
       console.log(res);
-      if (res.data) {
-        router.push("/business-details");
+      if (res) {
+        localStorage.setItem("user", JSON.stringify(res.user));
+        router.push("/"); // will redirect to price page
       }
     } catch (err) {
       console.error(err);
@@ -34,9 +35,7 @@ const CreatePasswordPage = () => {
   };
 
   return (
-    <div className="bg-muted flex min-h-[calc(100vh-64px)] flex-col items-center justify-center gap-6 p-6 md:p-10">
-     <div className="flex w-full max-w-sm flex-col gap-6">
-
+    <div className="flex w-full max-w-md px-5 flex-col gap-6">
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Create your Password
       </h2>
@@ -67,7 +66,6 @@ const CreatePasswordPage = () => {
           Save & Continue
         </Button>
       </form>
-      </div>
     </div>
   );
 };

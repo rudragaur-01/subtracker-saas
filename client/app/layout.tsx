@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,12 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <body>
-          <nav className="sticky top-0 z-50 bg-accent-foreground py-4 text-primary-foreground text-center font-semibold text-lg md:text-xl tracking-wide">
-            Revy – Never Miss a Renewal
-          </nav>
+        <Navbar />
+        <main className="pt-20 flex flex-col justify-center items-center">
           {children}
-        </body>
+        </main>
       </body>
     </html>
   );

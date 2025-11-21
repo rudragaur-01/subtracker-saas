@@ -2,7 +2,7 @@ import pool from "../config/database.js";
 export const businessDetails = async (req, res) => {
   try {
     const userId = req.user.userId;
-console.log(userId)
+    console.log(userId);
     const {
       businessName,
       contactNumber,
@@ -13,14 +13,12 @@ console.log(userId)
       website,
     } = req.body;
 
-    // --- Validation ---
     if (!businessName || !businessType || !address) {
       return res.status(400).json({
         message: "Business name, business type, and address are required",
       });
     }
 
-    // --- Insert Data into business table ---
     const result = await pool.query(
       `
       INSERT INTO business (
@@ -49,7 +47,18 @@ console.log(userId)
     );
 
     const newBusiness = result.rows[0];
-    console.log("----",newBusiness)
+
+    const joinedData = await pool.query(
+      `SELECT 
+        b.*, 
+        u.email
+        FROM business b
+        INNER JOIN users u
+        ON b.user_id = u.id
+        WHERE b.id = $1;
+        `,
+      [newBusiness.id]
+    );
 
     res.status(200).json({
       message: "Business details saved successfully",

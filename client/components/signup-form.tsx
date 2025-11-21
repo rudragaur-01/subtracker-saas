@@ -55,10 +55,11 @@ export function SignupForm({
         email,
         password,
       });
+      console.log(res);
 
       if (res?.token) {
         localStorage.setItem("token", res.token);
-        router.push("/business-details");
+        router.push("/"); // will redirect to price page
       } else {
         alert("Signup failed");
       }
@@ -128,7 +129,7 @@ export function SignupForm({
               </Field>
 
               {/* Password & Confirm Password */}
-              <Field className="grid grid-cols-2 gap-4">
+              <Field className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <Input
@@ -160,7 +161,7 @@ export function SignupForm({
               <Field>
                 <Button type="submit">Create Account</Button>
                 <FieldDescription className="text-center">
-                  Already have an account? <a href="/login">Login</a>
+                  Already have an account? <a href="/auth/login">Login</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

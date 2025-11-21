@@ -1,9 +1,9 @@
 import express from "express";
-import { businessDetails } from "../controllers/admin.controller.js";
+import { createCheckoutSession } from "../controllers/payment.controller.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/business-details", authMiddleware, businessDetails);
+router.post("/create-checkout", authMiddleware, createCheckoutSession);
 
 export default router;
