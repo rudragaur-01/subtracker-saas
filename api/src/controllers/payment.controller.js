@@ -23,7 +23,7 @@ export const createCheckoutSession = async (req, res) => {
         },
       ],
       success_url: "http://localhost:3000/business-details",
-      cancel_url: "http://localhost:3000/",
+      cancel_url: "http://localhost:3000/cancel",
     });
 
     res.json({

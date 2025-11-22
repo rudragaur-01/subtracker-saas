@@ -118,7 +118,7 @@ export const googleCallback = async (req, res) => {
       user = userCheck.rows[0];
     }
     const token = GenerateToken(user.id, user.email);
-    res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
+    res.redirect(`${process.env.CLIENT_URL}/callback?token=${token}`);
   } catch (error) {
     console.error(error);
     res.status(500).send("Google login failed");
