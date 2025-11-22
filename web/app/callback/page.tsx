@@ -9,7 +9,7 @@ export default function AuthCallback() {
     const token = new URLSearchParams(window.location.search).get("token");
     if (token) {
       localStorage.setItem("token", token);
-      router.replace("/auth/create-password");
+      router.replace("/create-password");
     }
   }, []);
 

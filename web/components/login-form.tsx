@@ -1,4 +1,3 @@
-"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,37 +14,13 @@ import {
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
-import { FcGoogle } from "react-icons/fc";
-
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { login } from "@/api/auth";
+import { FaGoogle } from "react-icons/fa";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await login({ email, password });
-      if (res?.token) {
-        localStorage.setItem("token", res.token);
-        router.push("/"); // will redirect to price page 
-      } else {
-        alert("Login failed");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong");
-    }
-  };
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -54,61 +29,48 @@ export function LoginForm({
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form>
             <FieldGroup>
               <Field>
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => {
-                    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
-                  }}
-                  className="flex items-center justify-center gap-2"
-                >
-                  <FcGoogle className="h-5 w-5" />
-                  Continue with Google
+                <Button variant="outline" type="button">
+                  <FaGoogle />
+                  Login with Google
                 </Button>
               </Field>
-
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
-
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Field>
-
               <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  {/* <a
+                    href="#"
+                    className="ml-auto text-sm underline-offset-4 hover:underline"
+                  >
+                    Forgot your password?
+                  </a> */}
+                </div>
+                <Input id="password" type="password" required />
               </Field>
-
               <Field>
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/auth/signup">Sign up</a>
+                  Don&apos;t have an account? <a href="/signup">Sign up</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
           </form>
         </CardContent>
       </Card>
-
       <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.

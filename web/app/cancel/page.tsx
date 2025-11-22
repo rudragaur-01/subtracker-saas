@@ -5,8 +5,8 @@ import React from "react";
 
 const CancelPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-md text-center">
+    <div className=" flex flex-col items-center justify-center bg-gray-50 ">
+      <div className="bg-white p-8 rounded-xl max-w-md text-center">
         <h1 className="text-2xl font-bold mb-4 text-red-600">
           Payment Cancelled
         </h1>

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { plans } from "@/constants";
+import { plans } from "@/mock";
 
 import api from "@/api/api";
 import PriceCard from "@/components/PriceCard";
@@ -10,7 +10,7 @@ const page = () => {
 
   const handlePlanSelect = async (priceId: string) => {
     const token = localStorage.getItem("token");
-    if (!token) return router.push("/auth/login");
+    if (!token) return router.push("/login");
 
     try {
       const res = await api.post(
@@ -28,12 +28,12 @@ const page = () => {
     }
   };
   return (
-    <section className="mx-auto  w-full px-4 mt-16 pb-20">
+    <section className="mx-auto w-full ">
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-10">
         Choose the Plan That Fits Your Business
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1  lg:grid-cols-3  gap-5">
         {plans.map((p) => (
           <PriceCard key={p.name} plan={p} onSelect={handlePlanSelect} />
         ))}
