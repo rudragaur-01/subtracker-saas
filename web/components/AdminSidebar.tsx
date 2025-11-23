@@ -10,8 +10,9 @@ import {
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/admin/dashboard" },
   { label: "Customers", icon: Users, href: "/admin/customers" },
+   { label: "Create New Customer", icon: Users, href: "/admin/new-customer" },
   { label: "Remainders", icon: MessageSquare, href: "/admin/remainders" },
-  { label: "Pricing", icon: CreditCard, href: "/admin/pricing" },
+  { label: "Your Plan", icon: CreditCard, href: "/admin/your-plan" },
   { label: "Settings", icon: Settings, href: "/admin/settings" },
 ];
 
