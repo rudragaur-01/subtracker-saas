@@ -21,8 +21,12 @@ import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/api/auth";
+import api from "@/api/api";
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,17 +35,28 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const res = await login({ email, password });
-      if (res?.token) {
-        localStorage.setItem("token", res.token);
-        router.push("/plans"); // redirect after login
-      } else {
-        alert("Invalid credentials");
+
+      if (!res?.token) {
+        return;
       }
-    } catch (err) {
+
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
+
+      const checkStatus = await api.get("/api/payment/check-user-status");
+
+      
+      const redirectUrl = checkStatus?.data?.redirectUrl 
+      router.push(redirectUrl);
+    } catch (err: any) {
       console.error(err);
-      alert("Something went wrong. Please try again.");
+      alert(
+        err?.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }

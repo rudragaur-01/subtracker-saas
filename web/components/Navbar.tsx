@@ -52,7 +52,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link href="/dashboard">
+              <Link href="/admin/dashboard">
                 <Button className="bg-primary hover:bg-primary/90">
                   Dashboard
                 </Button>

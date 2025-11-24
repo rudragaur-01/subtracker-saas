@@ -168,3 +168,33 @@ export const createNewCustomer = async (req, res) => {
     });
   }
 };
+
+
+export const DashboardSummary = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+   
+    const result = await pool.query(
+      `SELECT 
+  COUNT(*) AS total_customer,
+  COALESCE(SUM(amount::numeric), 0) AS total_revenue
+FROM customers
+WHERE user_id = $1;
+`,
+      [userId]
+    );
+
+    const summary = result.rows[0]; 
+    return res.status(200).json({
+      message: "Dashboard summary fetched successfully",
+      totalCustomer: Number(summary.total_customer),
+      totalRevenue: Number(summary.total_revenue),
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+

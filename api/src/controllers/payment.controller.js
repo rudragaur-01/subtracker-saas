@@ -110,3 +110,70 @@ export const stripeWebhook = async (req, res) => {
 
   res.status(200).json({ received: true });
 };
+
+export const checkCustomerStatus = async (req, res) => {
+  const { userId } = req.user;
+
+  try {
+    const dbResult = await pool.query(
+      `SELECT * FROM stripe_subscriptions WHERE user_id = $1 AND status = 'active'`,
+      [userId]
+    );
+
+    if (dbResult.rows.length > 0) {
+      return res.json({
+        alreadyPaid: true,
+        redirectUrl: "/admin/dashboard",
+      });
+    }
+
+    const customerRecord = await pool.query(
+      `SELECT customer_id FROM stripe_subscriptions WHERE user_id = $1 ORDER BY id DESC LIMIT 1`,
+      [userId]
+    );
+
+    if (customerRecord.rows.length > 0) {
+      const customerId = customerRecord.rows[0].customer_id;
+      const subscriptions = await stripe.subscriptions.list({
+        customer: customerId,
+        status: "active",
+        limit: 1,
+      });
+
+      if (subscriptions.data.length > 0) {
+        const sub = subscriptions.data[0];
+
+        await pool.query(
+          `INSERT INTO stripe_subscriptions(user_id, customer_id, subscription_id, plan, price_id, start_date, end_date, status)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+           ON CONFLICT (subscription_id) DO UPDATE SET status = EXCLUDED.status`,
+          [
+            userId,
+            customerId,
+            sub.id,
+            sub.items.data[0].price.product,
+            sub.items.data[0].price.id,
+            new Date(sub.start_date * 1000),
+            new Date(sub.current_period_end * 1000),
+            sub.status,
+          ]
+        );
+
+        return res.json({
+          alreadyPaid: true,
+          redirectUrl: "/admin/dashboard",
+        });
+      }
+    }
+    return res.json({
+      alreadyPaid: false,
+      redirectUrl: "/plans",
+    });
+  } catch (error) {
+    console.error("Error checking subscription:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};

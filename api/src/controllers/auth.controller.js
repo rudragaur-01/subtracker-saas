@@ -80,6 +80,7 @@ export const login = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        isActive: user.is_active,
       },
     });
   } catch (error) {
