@@ -1,11 +1,11 @@
-import "./globals.css";
+
 
 export const metadata = {
   title: "Your SaaS Name",
   description: "Gym management platform",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>{children}</body>
